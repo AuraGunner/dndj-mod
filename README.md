@@ -1,7 +1,7 @@
 # dndj-mod
 Dungeons &amp; Degenerate Jokers (for Steamodded)
 
-CURRENT VERSION - 0.2.1a
+CURRENT VERSION - 0.2.1b
 
 (Credit to eir_nya for the Killer Queen joker sprite)
 
