@@ -814,7 +814,7 @@ SMODS.Joker{
     key = 'beanstalk',
     rarity = 3,
     atlas = 'jokers_atlas',
-    cost = 8,
+    cost = 10,
     blueprint_compat = true,
     pos = { x = 5, y = 0 },
     config = { extra = {repetitions = 2} },
