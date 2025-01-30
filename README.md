@@ -1,5 +1,5 @@
 # dndj-mod
-Dungeons &amp; Degenerate Jokers
+Dungeons &amp; Degenerate Jokers (for Steamodded)
 
 CURRENT VERSION - 0.2.1a
 
@@ -8,7 +8,9 @@ CURRENT VERSION - 0.2.1a
 This mod aims to re-imagine the various cards from the blackjack rougelite "Dungeons & Degenerate Gamblers" as Jokers,
 with extra features maybe coming soon.
 
-### 0.2 UPDATE IS HERE!  TALISMAN IS REQUIRED FOR THIS MOD!!
+To install this mod, simply download the code as zip, and drag the DnDJ folder into your mods folder
+
+### 0.2 UPDATE IS HERE!  STEAMODDED AND TALISMAN IS REQUIRED FOR THIS MOD!!
 
 8 NEW RANKS!
 
