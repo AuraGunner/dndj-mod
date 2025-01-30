@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.2.1
+--- VERSION: 0.2.1a
 --- BADGE_COLOR: 32751a
 
 -- A T L A S E S --
@@ -1184,6 +1184,7 @@ SMODS.Joker{
     end,
 
     calculate = function(self, card, context)
+            --local originalhand = G.hand.config.card_limit
             if context.first_hand_drawn and not context.blueprint then
                 card.ability.h_size = math.floor((G.hand.config.card_limit * card.ability.extra.Xhandsize)-G.hand.config.card_limit)
                 G.hand:change_size(card.ability.h_size) 
@@ -1193,6 +1194,9 @@ SMODS.Joker{
                     x_chips = card.ability.x_chips,
                     --message = localize{ type = "variable", key = "a_xchips", vars = { card.ability.x_chips } }, colour = G.C.CHIPS, sound = "talisman_xchip"
                 }
+            end
+            if context.end_of_round and not context.repetition and not context.individual then
+                G.hand:change_size(-card.ability.h_size)
             end
         --end
     end
