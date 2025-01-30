@@ -36,7 +36,9 @@ Stone Age Joker [Rare] - X3 Mult if played hand contains a Stone card
 BALANCE CHANGES
 
 - Jackpot changed from Uncommon to Rare
+- Jack and the Beanstalk changed from Uncommon to Rare
 - Jackpot cost increased from 6 to 7
+- Jack and the Beanstalk cost increased from 8 to 10
 - Jackpot can no longer generate Negative playing cards
 - Blueprint now works with Jackpot
 - Jack in a Box now gains +3 Mult per round instead of per hand
