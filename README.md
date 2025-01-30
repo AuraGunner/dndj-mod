@@ -18,14 +18,19 @@ You can find these "Illegal" ranks in new uncommon Contraband Booster Packs, or 
 2 NEW SPECTRALS!
 
 Inversion - Adds negative to 1 playing card
+
 Black Magic - Destroys 1 random card and adds 3 Illegal cards
 
 5 NEW JOKERS!
 
 Musician [Rare] - Gains X0.2 Mult for every scored 21
+
 Checkmate [Uncommon] - Reduces boss blind by 25%
+
 Guillotine [Rare] - 0.5X Chips, 1.5X Hand size
+
 Killer Queen [Uncommon] - Destroys 1 card and gains +5 mult at the start of each round
+
 Stone Age Joker [Rare] - X3 Mult if played hand contains a Stone card
 
 BALANCE CHANGES
