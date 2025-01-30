@@ -1,11 +1,12 @@
 --- STEAMODDED HEADER
---- MOD_NAME: D & DJ
+--- MOD_NAME: DNDJ
 --- MOD_ID: dndj
 --- MOD_AUTHOR: [Auraa_]
 --- MOD_DESCRIPTION: This mod aims to re-imagine cards from Dungeons & Degenerate Gamblers as jokers
+--- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.1.1
+--- VERSION: 0.2.0
 --- BADGE_COLOR: 32751a
 
 -- A T L A S E S --
@@ -16,11 +17,515 @@ SMODS.Atlas {
     px = 71,
     py = 95
 }
+-- Special atlas for Killer Queen joker --
+SMODS.Atlas {
+    key = 'jojokers_atlas',
+    path = 'JoJokers.png',
+    px = 71,
+    py = 98
+}
+SMODS.Atlas {
+    key = 'rank_ex',
+    path = 'rank_ex.png',
+    px = 71,
+    py = 95
+}
+SMODS.Atlas {
+    key = 'rank_ex_hc',
+    path = 'rank_ex_hc.png',
+    px = 71,
+    py = 95
+}
+SMODS.Atlas {
+    key = 'booster', 
+    path = 'Boosters.png', 
+    px = 71, 
+    py = 95
+}
+SMODS.Atlas {
+    key = 'spectral', 
+    path = 'Spectrals.png', 
+    px = 71, 
+    py = 95
+}
 
 -- C O M P A T I B I L I T Y --
-dndj.compat = {
-    talisman = (SMODS.Mods['Talisman'] or {}).can_load,
+
+--Talisman
+to_big = to_big or function(num)
+    return num
+end
+
+-- UnStable (support coming eventually) --
+local unstable = next(SMODS.find_mod('UnStable'))
+
+
+-- R A N K S --
+
+-- Function to check if rank is decimal, taken from UnStable --
+local function is_decimal(card)
+	return SMODS.Ranks[card.base.value].is_decimal and not card.config.center.no_rank
+end
+
+
+-- "Prev" property, taken from UnStable --
+function init_prev_rank_data()
+	print("Initialize Remaining Previous Rank Data")
+	for _, rank in pairs(SMODS.Ranks) do
+		
+		--Initialize
+		--In case the rank table does not have prev existed
+		--Base rank and UNSTB one has them defined manually by default
+		if not rank.prev then
+			rank.prev = {}
+		end
+		
+		next_rank_list = rank.next
+		
+		for i=1, #next_rank_list do
+			local next_rank = SMODS.Ranks[next_rank_list[i]]
+			local prev = next_rank.prev or {}
+			
+			if not table_has_value(prev, rank.key) then
+				table.insert(prev, rank.key)
+				next_rank.prev = prev
+			end
+		end
+	end
+end
+
+--taken from unstable again lol
+function setPoolRankFlagEnable(rank, isEnable)
+	if not G.GAME or G.GAME.pool_flags[rank] == isEnable then return end
+	
+	G.GAME.pool_flags[rank] = isEnable
+end
+
+function getPoolRankFlagEnable(rank)
+	return (G.GAME and G.GAME.pool_flags[rank] or false)
+end
+
+--Shared pool rank checking function
+local function _rankCheck(self, args)
+	if args and args.initial_deck then
+        return false
+    end
+	
+	return getPoolRankFlagEnable(self.key)
+end
+
+
+-- Rank Implementation --
+SMODS.Rank {
+    hc_atlas = 'rank_ex_hc',
+    lc_atlas = 'rank_ex',
+
+    hidden = true,
+
+    key = '11',
+    card_key = '11',
+    pos = {x = 13},
+    nominal = 11,
+    next = { 'dndj_12' },
+    prev = {'10'},
+    shorthand = '11',
+    loc_txt = { name = "11"},
+    in_pool = _rankCheck,
 }
+
+SMODS.Rank {
+    hc_atlas = 'rank_ex_hc',
+    lc_atlas = 'rank_ex',
+
+    hidden = true,
+
+    key = '12',
+    card_key = '12',
+    pos = {x = 14},
+    nominal = 12,
+    next = { 'dndj_13' },
+    prev = {'dndj_11'},
+    shorthand = '12',
+    loc_txt = { name = "12"},
+    in_pool = _rankCheck,
+}
+
+SMODS.Rank {
+    hc_atlas = 'rank_ex_hc',
+    lc_atlas = 'rank_ex',
+
+    hidden = true,
+
+    key = '13',
+    card_key = '13',
+    pos = {x = 15},
+    nominal = 13,
+    next = { 'Ace' },
+    prev = {'dndj_12'},
+    shorthand = '13',
+    loc_txt = { name = "13"},
+    in_pool = _rankCheck,
+}
+
+SMODS.Rank {
+    hc_atlas = 'rank_ex_hc',
+    lc_atlas = 'rank_ex',
+
+    hidden = true,
+
+    key = '21',
+    card_key = '21',
+    pos = {x = 16},
+    nominal = 21,
+    next = { 'dndj_13' },
+    prev = {'dndj_11'},
+    shorthand = '21',
+    loc_txt = { name = "21"},
+    in_pool = _rankCheck,
+}
+
+SMODS.Rank {
+    hc_atlas = 'rank_ex_hc',
+    lc_atlas = 'rank_ex',
+
+    hidden = true,
+
+    key = '1',
+    card_key = '1',
+    pos = {x = 17},
+    nominal = 1,
+    strength_effect = {
+        fixed = 2,
+        random = false,
+        ignore = false
+    },
+    next = { '2' },
+    prev = {'dndj_0'},
+    shorthand = '1',
+    loc_txt = { name = "1"},
+    in_pool = _rankCheck,
+}
+
+SMODS.Rank {
+    hc_atlas = 'rank_ex_hc',
+    lc_atlas = 'rank_ex',
+
+    hidden = true,
+
+    key = '0.5',
+    card_key = '0.5',
+    pos = {x = 18},
+    nominal = 0.5,
+
+    is_decimal = true,
+    rank_act = {'0', '0.5', '1'},
+    next = { 'dndj_1', '2' },
+    prev = {'dndj_0'},
+    shorthand = '0.5',
+    loc_txt = { name = "Half"},
+    in_pool = _rankCheck,
+}
+
+SMODS.Rank {
+    hc_atlas = 'rank_ex_hc',
+    lc_atlas = 'rank_ex',
+
+    hidden = true,
+
+    key = 'Pi',
+    card_key = 'P',
+    pos = {x = 19},
+    nominal = 3.14,
+    next = { '4', '5' },
+    prev = {'3'},
+    shorthand = 'Pi',
+    is_decimal = true,
+    rank_act = {'3', '3.14', '4'},
+    loc_txt = { name = "Pi"},
+    in_pool = _rankCheck,
+}
+
+SMODS.Rank {
+    hc_atlas = 'rank_ex_hc',
+    lc_atlas = 'rank_ex',
+
+    hidden = true,
+
+    key = '0',
+    card_key = '0',
+    pos = {x = 20},
+    nominal = 0,
+
+
+    next = { 'dndj_0.5', 'dndj_1' },
+    shorthand = '0',
+    loc_txt = { name = "0"},
+    in_pool = _rankCheck,
+}
+
+-- Vanilla Rank Changes --
+-- Code taken from UnStable --
+--SMODS.Ranks['2'].strength_effect = {
+  --  fixed = 2,
+   -- random = false,
+   -- ignore = false
+--}
+SMODS.Ranks['2'].next = {'3', 'dndj_Pi'}
+
+SMODS.Ranks['3'].strength_effect = {
+   fixed = 2,
+   random = false,
+   ignore = false
+}
+SMODS.Ranks['3'].next = {'dndj_Pi', '4'}
+
+--Change straight edge off from Ace, so it start to look at rank 0 instead
+SMODS.Ranks['Ace'].straight_edge = false
+SMODS.Ranks['Ace'].strength_effect = {
+   fixed = 2,
+   random = false,
+   ignore = false
+}
+--SMODS.Ranks['Ace'].next = {'unstb_r2', '2', 'unstb_e'}--
+
+--Vanilla Rank Alteration for Set 2
+SMODS.Ranks['10'].next = {'Jack', 'dndj_11'}
+
+--Add preliminary prev property into vanilla rank list, so the default behavior will always point to this one
+local vanilla_rank_list = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace'}
+
+for i=#vanilla_rank_list, 2, -1 do
+SMODS.Ranks[vanilla_rank_list[i]].prev = {vanilla_rank_list[i-1]}
+end
+SMODS.Ranks['2'].prev = {'Ace'}
+
+
+-- B O O S T E R S --
+
+
+-- Taken from BUNCO and UNSTABLE
+
+local contraband_booster_rate = {.5, .5, .25, .1}
+local contraband_booster_cost = {4, 4, 6, 8}
+local contraband_booster_name = {"Contraband Pack", "Contraband Pack", "Jumbo Contraband Pack", "Mega Contraband Pack"}
+
+for i = 1, 4 do
+    SMODS.Booster{
+        key = 'contraband_'..(i <= 2 and i or i == 3 and 'jumbo' or 'mega'),
+        loc_txt = {
+            group_name = "Contraband Pack",
+            name = contraband_booster_name[i],
+            text = {
+              "Choose {C:attention}#1#{} of up to",
+                "{C:attention}#2#{C:attention} Playing{} cards with",
+                "{C:attention}an illegal rank{} to add to your deck"
+            },
+          },
+		cost = contraband_booster_cost[i],
+        atlas = 'booster', pos = { x = i-1, y = 0 },
+        config = {extra = i <= 2 and 3 or 5, choose =  i <= 3 and 1 or 2},
+        draw_hand = false,
+
+      
+        create_card = function(self, card)
+            local card = create_card("Base", G.pack_cards, nil, nil, nil, true, nil, 'contraband')
+			--local edition_rate = 3
+			local edition = poll_edition("randomseed", nil, true, false)
+            local enhancement = G.P_CENTERS[SMODS.poll_enhancement({guaranteed = false, mod = 0.25})]
+			
+			local rank_set = {"dndj_0","dndj_0.5","dndj_1","dndj_Pi","dndj_11","dndj_12","dndj_13","dndj_21"}
+			
+			--Lowkey Deck / Sleeve combo mode, prevent high rank from being spawned
+			--if G.GAME.prevent_high_rank then
+			--	rank_set = {"unstb_0", "unstb_0.5", "unstb_1", "unstb_r2", "unstb_e", "unstb_Pi"}
+			---end
+			
+			SMODS.change_base(card, nil, pseudorandom_element(rank_set, pseudoseed('contraband'..G.GAME.round_resets.ante)))
+			
+			--Pooling Enhancements
+			--local cen_pool = {}
+			--for k, v in pairs(G.P_CENTER_POOLS["Enhanced"]) do
+			--	if not v.replace_base_card and not v.disenhancement then 
+			--		cen_pool[#cen_pool+1] = v
+			--	end
+			--end
+			
+			--local enh = pseudorandom_element(cen_pool, pseudoseed('contraband_enhance'))
+            
+            if enhancement then
+			card:set_ability(enhancement)
+            end
+			
+			card:set_edition(edition)
+			card:set_seal(SMODS.poll_seal({mod = 10}))
+			
+			return card
+            -- return {set = 'Polymino', area = G.pack_cards, skip_materialize = nil, soulable = nil, key_append = 'vir'}
+        end,
+
+        ease_background_colour = function(self) ease_background_colour{new_colour = HEX('62a1b4'), special_colour = HEX('fce1b6'), contrast = 2} end,
+	    particles = function(self)
+            G.booster_pack_sparkles = Particles(1, 1, 0,0, {
+                timer = 0.015,
+                scale = 0.3,
+                initialize = true,
+                lifespan = 3,
+                speed = 0.2,
+                padding = -1,
+                attach = G.ROOM_ATTACH,
+                colours = {G.C.BLACK, G.C.GOLD},
+                fill = true
+            })
+            G.booster_pack_sparkles.fade_alpha = 1
+            G.booster_pack_sparkles:fade(1, 0)
+        end,
+
+        --pos = get_coordinates(i+3),
+        --atlas = 'booster',
+		
+		weight = contraband_booster_rate[i],
+    }
+end
+
+-- S P E C T R A L --
+
+SMODS.Consumable{
+    set = 'Spectral', atlas = 'spectral',
+    pos = {x = 0, y = 0},
+    key = 'spc_inversion',
+
+    config = {extra = {}},
+    loc_txt = {
+        name = "Inversion",
+        text = {
+          "Adds {C:dark_edition}Negative{} to",
+            "{C:attention}1{} selected card in hand",
+        },
+      },
+    loc_vars = function(self, info_queue, card)
+        return {vars = {}}
+    end,
+    
+    can_use = function(self, card)
+        if G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] and (not G.hand.highlighted[1].edition) then 
+            return true
+        end
+        
+        return false
+    end,
+
+    use = function(self,card)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            local over = false
+            local edition = poll_edition("randomseed", nil, false, true, {"e_negative"})
+            local aura_card = G.hand.highlighted[1]
+            aura_card:set_edition(edition, true)
+            card:juice_up(0.3, 0.5)
+        return true end }))
+    end
+}
+
+SMODS.Consumable {
+    set = 'Spectral', atlas = 'spectral',
+    pos = {x = 1, y = 0},
+    key = 'spc_blackmagic',
+    config = {extra = {create_count = 3}},
+    loc_txt = {
+        name="Black Magic",
+                text={
+                    "Destroy {C:attention}1{} random",
+                    "card in your hand, add",
+                    "{C:attention}#1#{} random {C:attention}Enhanced",
+                    "{C:attention}Playing cards{} with an",
+                    "{C:attention}illegal rank{} to your hand",
+                },
+            },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {card and card.ability.extra.create_count or self.config.extra.create_count}
+        }
+    end,
+
+    can_use = function(self, card)
+		if G.hand then
+			return true
+		end
+		return false
+	end,
+    use = function(self, card)
+		--Enable Rank Flag
+		--setPoolRankFlagEnable('unstb_21', true);
+	
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            play_sound('tarot1')
+			card:juice_up(0.3, 0.5)
+            return true end }))
+		
+		--Based on Basegame's Immolate
+		local destroyed_cards = {}
+		
+		local temp_hand = {}
+		for k, v in ipairs(G.hand.cards) do temp_hand[#temp_hand+1] = v end
+		table.sort(temp_hand, function (a, b) return not a.playing_card or not b.playing_card or a.playing_card < b.playing_card end)
+		pseudoshuffle(temp_hand, pseudoseed('blackmagic'))
+
+		for i = 1, 1 do destroyed_cards[1] = temp_hand[i] end
+		
+		--Destroy Cards
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.1,
+			func = function() 
+				for i=#destroyed_cards, 1, -1 do
+					local c = destroyed_cards[i]
+					--print(c)
+					
+					if c.ability.name == 'Glass Card' then 
+						c:shatter()
+					else
+						c:start_dissolve(nil, i == #destroyed_cards)
+					end
+				end
+				return true end }))
+		--Calling Jokers to process the card destroying
+		delay(0.3)
+		--print('joker')
+		for i = 1, #G.jokers.cards do
+			G.jokers.cards[i]:calculate_joker({remove_playing_cards = true, removed = destroyed_cards})
+		end
+		
+		--Adding New Cards
+		G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.7,
+                func = function() 
+                    local cards = {}
+                    for i=1, card.ability.extra.create_count do
+                        cards[i] = true
+                        local rank_set = pseudorandom_element({"dndj_0","dndj_0.5","dndj_1","dndj_Pi","dndj_11","dndj_12","dndj_13","dndj_21"}, pseudoseed('blackmagic'))
+                        local _rank = SMODS.Ranks[rank_set]
+                        local _suit = pseudorandom_element(SMODS.Suits, pseudoseed('blackmagic')) or SMODS.Suits['Spades']
+						
+						--Pooling Enhancements
+						local cen_pool = {}
+                        for k, v in pairs(G.P_CENTER_POOLS["Enhanced"]) do
+                            if not v.replace_base_card and not v.disenhancement then 
+                                cen_pool[#cen_pool+1] = v
+                            end
+                        end
+						
+                        create_playing_card({front = G.P_CARDS[(_suit.card_key)..'_'..(_rank.card_key)], center = pseudorandom_element(cen_pool, pseudoseed('altar'))}, G.hand, nil, i ~= 1, {G.C.SECONDARY_SET.Spectral})
+                    end
+                    playing_card_joker_effects(cards)
+                    return true end }))
+		
+	end,
+
+	--pos = get_coordinates(4),
+}
+
+
+
 
 -- J O K E R S --
 
@@ -101,7 +606,7 @@ SMODS.Joker{
         name = "Jack of all Trades",
         text = {
             "Played {C:attention}Jacks{} give {C:chips}+#1#{} Chips,",
-            "{C:mult}+#2#{} Mult, {X:mult,C:white}x#3#{} Mult, and {C:money}$#4#{}",
+            "{C:mult}+#2#{} Mult, {X:mult,C:white}X#3#{} Mult, and {C:money}$#4#{}",
             "when scored"
         },
       },
@@ -136,8 +641,8 @@ SMODS.Joker{
     loc_txt = {
         name = "Jack in a Box",
         text = {
-            "This Joker gains {C:mult}+#2#{} Mult for every ",
-            "hand played, but has a {C:green}1 in 10{} chance ",
+            "This Joker gains {C:mult}+#2#{} Mult at the ",
+            "start of each round, but has a {C:green}1 in 10{} chance ",
             "to destroy itself at the end of the round",
             "{C:inactive}(Currently {}{C:mult}+#1#{}{C:inactive} Mult){}"
         },
@@ -152,7 +657,7 @@ SMODS.Joker{
                 mult_mod = card.ability.extra.mult
             }
         end
-    if context.before and not context.blueprint then
+    if context.first_hand_drawn and not context.blueprint then
         card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
         return {
             message = localize('k_upgrade_ex'),
@@ -396,9 +901,10 @@ end
 -- Jackpot --
 SMODS.Joker{
     key = 'jackpot',
-    rarity = 2,
+    rarity = 3,
     atlas = 'jokers_atlas',
-    cost = 6,
+    cost = 7,
+    blueprint_compat = true,
     eternal_compat = false,
     pos = { x = 8, y = 0 },
     --config = { extra = {} },
@@ -430,7 +936,7 @@ SMODS.Joker{
                         center = G.P_CENTERS.c_base}, G.hand, nil, nil, nil)
                     _card:set_ability(G.P_CENTERS[SMODS.poll_enhancement({guaranteed = true, options = {"m_bonus", "m_mult", "m_gold", "m_steel", "m_lucky"}, type_key = 'randomseed'})], true, false)
                     _card:set_seal(SMODS.poll_seal({guaranteed = true, type_key = 'randomseed'}), true, false)
-                    _card:set_edition(poll_edition("randomseed", nil, false, true, {"e_foil", "e_holo","e_polychrome","e_negative"}))
+                    _card:set_edition(poll_edition("randomseed", nil, false, true, {"e_foil", "e_holo","e_polychrome"}))
                     G.GAME.blind:debuff_card(_card)
                     G.hand:sort()
                     if context.blueprint_card then context.blueprint_card:juice_up() else card:juice_up() end
@@ -585,6 +1091,207 @@ SMODS.Joker{
     end
 
 }
+
+-- Musician --
+SMODS.Joker{
+    key = 'musician',
+    rarity = 3,
+    atlas = 'jokers_atlas',
+    cost = 10,
+    blueprint_compat = true,
+    pos = { x = 0, y = 1 },
+    config = { extra = {x_mult = 1, x_mult_mod = 0.2} },
+    loc_txt = {
+        name = "Musician",
+        text = {
+            "This Joker gains {X:mult,C:white}X#2#{} Mult",
+            "for every {C:attention}21{} scored",
+            "{C:inactive}(Currently {}{X:mult,C:white}X#1#{}{C:inactive} Mult){}"
+        },
+      },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card.ability.extra.x_mult, card.ability.extra.x_mult_mod} }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play then
+            if context.other_card.base.value == "dndj_21" then
+                card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_mod
+                return {
+                    --chips = card.ability.extra.chips,
+                    --mult = card.ability.extra.mult,
+                    extra = {focus = card, message = localize('k_upgrade_ex')},
+                    colour = G.C.MULT,
+                    card = card
+                    }
+
+            end
+        end
+        if context.joker_main then
+            return {
+            x_mult_mod = card.ability.extra.x_mult,
+            --message = localize('k_upgrade_ex')
+            }
+        end
+    end
+
+}
+
+-- Checkmate --
+SMODS.Joker{
+    key = 'checkmate',
+    rarity = 2,
+    atlas = 'jokers_atlas',
+    cost = 7,
+    blueprint_compat = true,
+    pos = { x = 1, y = 1 },
+    config = { extra = {} },
+    loc_txt = {
+        name = "Checkmate",
+        text = {
+            "Reduces {C:attention}Boss Blinds{} by {C:attention}25%{}"
+        },
+      },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {} }
+    end,
+    calculate = function(self, card, context)
+        if context.setting_blind and context.blind.boss then
+            G.GAME.blind.chips = G.GAME.blind.chips * 0.75
+            G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+        end
+    end
+
+}
+
+-- Guillotine --
+
+SMODS.Joker{
+    key = 'guillotine',
+    rarity = 3,
+    atlas = 'jokers_atlas',
+    cost = 9,
+    blueprint_compat = true,
+    pos = { x = 2, y = 1 },
+    config = { h_size = 0, x_chips = 0.5,  extra = { Xhandsize = 1.5} },
+    loc_txt = {
+        name = "Guillotine",
+        text = {
+             "{C:white,X:chips}X#2#{} Chips, {C:white,X:attention}X#3#{} hand size"
+        },
+      },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card.ability.h_size, card.ability.x_chips, card.ability.extra.Xhandsize} }
+    end,
+
+    calculate = function(self, card, context)
+            if context.first_hand_drawn and not context.blueprint then
+                card.ability.h_size = math.floor((G.hand.config.card_limit * card.ability.extra.Xhandsize)-G.hand.config.card_limit)
+                G.hand:change_size(card.ability.h_size) 
+            end
+            if context.joker_main then
+                return {
+                    x_chips = card.ability.x_chips,
+                    --message = localize{ type = "variable", key = "a_xchips", vars = { card.ability.x_chips } }, colour = G.C.CHIPS, sound = "talisman_xchip"
+                }
+            end
+        --end
+    end
+
+}
+
+-- Killer Queen --
+SMODS.Joker{
+
+    key = 'jojo_reference',
+    rarity = 2,
+    atlas = 'jojokers_atlas',
+    cost = 6,
+    blueprint_compat = true,
+    pos = { x = 0, y = 0 },
+    config = { extra = {mult = 0, mult_mod = 5} },
+    loc_txt = {
+        name = "Killer Queen",
+        text = {
+            "When round begins, this Joker destroys",
+            "{C:attention}1{} random card in your hand and gains {C:mult}+#2#{} Mult",
+            "{C:inactive}(Currently {}{C:mult}+#1#{}{C:inactive} Mult)"
+        },
+      },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card.ability.extra.mult, card.ability.extra.mult_mod} }
+    end,
+
+    calculate = function(self, card, context)
+        if context.first_hand_drawn then
+            --local rndcard = pseudorandom_element(G.hand.cards, pseudoseed('killerqueenhastouchedthecard'))
+            --rndcard:start_dissolve()
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    local rndcard = pseudorandom_element(G.hand.cards, pseudoseed('killerqueenhastouchedthecard'))
+                    rndcard:start_dissolve()
+                    G.hand:sort()
+                    if context.blueprint_card then context.blueprint_card:juice_up() else card:juice_up() end 
+                    return true
+                end}))
+            card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
+            return {
+                message = localize('k_upgrade_ex'),
+                colour = G.C.MULT,
+                card = card
+            }
+        end
+        if context.joker_main then
+            return {
+                mult_mod = card.ability.extra.mult,
+                message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } }
+            }
+        end
+    end,
+}
+
+-- Stone Age Joker --
+SMODS.Joker{
+
+    key = 'flintstones',
+    rarity = 2,
+    atlas = 'jokers_atlas',
+    cost = 7,
+    blueprint_compat = true,
+    pos = { x = 3, y = 1 },
+    config = { extra = {x_mult = 3, stones = 0} },
+    loc_txt = {
+        name = "Stone Age Joker",
+        text = {
+            "{X:mult,C:white}X#1#{} Mult if played hand",
+            "contains a {C:attention}Stone Card{}"
+        },
+      },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card.ability.extra.x_mult, card.ability.extra.stones} }
+    end,
+
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and context.other_card.ability.name == 'Stone Card' then
+            card.ability.extra.stones = card.ability.extra.stones + 1
+        end
+        if context.joker_main and card.ability.extra.stones > 0 then
+            card.ability.extra.stones = 0
+            return {
+                x_mult_mod = card.ability.extra.x_mult
+            }
+            end
+        end
+
+
+}
+
+
+
+
+
+
 
 -- D E C K S --
 -- [TO BE COMPLETED] --
