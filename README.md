@@ -1,7 +1,7 @@
 # dndj-mod
 Dungeons &amp; Degenerate Jokers
 
-CURRENT VERSION - 0.2.1
+CURRENT VERSION - 0.2.1a
 
 TALISMAN IS REQUIRED!!!
 (Credit to eir_nya for the Killer Queen joker sprite)
