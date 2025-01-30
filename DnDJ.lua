@@ -1,12 +1,12 @@
 --- STEAMODDED HEADER
 --- MOD_NAME: DNDJ
 --- MOD_ID: dndj
---- MOD_AUTHOR: [Auraa_]
+--- MOD_AUTHOR: [Auraa_, eir_nya (Killer Queen joker art)]
 --- MOD_DESCRIPTION: This mod aims to re-imagine cards from Dungeons & Degenerate Gamblers as jokers
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.2.0
+--- VERSION: 0.2.1
 --- BADGE_COLOR: 32751a
 
 -- A T L A S E S --
@@ -812,7 +812,7 @@ SMODS.Joker{
 -- Jack and the Beanstalk --
 SMODS.Joker{
     key = 'beanstalk',
-    rarity = 2,
+    rarity = 3,
     atlas = 'jokers_atlas',
     cost = 8,
     blueprint_compat = true,
