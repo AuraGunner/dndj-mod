@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.2.1a
+--- VERSION: 0.2.1b
 --- BADGE_COLOR: 32751a
 
 -- A T L A S E S --
@@ -1167,9 +1167,9 @@ SMODS.Joker{
 
 SMODS.Joker{
     key = 'guillotine',
-    rarity = 3,
+    rarity = 2,
     atlas = 'jokers_atlas',
-    cost = 9,
+    cost = 5,
     blueprint_compat = true,
     pos = { x = 2, y = 1 },
     config = { h_size = 0, x_chips = 0.5,  extra = { Xhandsize = 1.5} },
