@@ -10,7 +10,7 @@ with extra features maybe coming soon.
 
 To install this mod, simply download the code as zip, and drag the DnDJ folder into your mods folder
 
-### 0.2 UPDATE IS HERE!  STEAMODDED AND TALISMAN IS REQUIRED FOR THIS MOD!!
+### 0.2 UPDATE IS HERE!  STEAMODDED AND TALISMAN ARE REQUIRED FOR THIS MOD!!
 
 8 NEW RANKS!
 
