@@ -1197,6 +1197,7 @@ SMODS.Joker{
             end
             if context.end_of_round and not context.repetition and not context.individual then
                 G.hand:change_size(-card.ability.h_size)
+                card.ability.h_size = 0
             end
         --end
     end
