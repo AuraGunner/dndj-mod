@@ -1,13 +1,24 @@
 --- STEAMODDED HEADER
 --- MOD_NAME: DNDJ
 --- MOD_ID: dndj
---- MOD_AUTHOR: [Auraa_, eir_nya (Killer Queen joker art)]
---- MOD_DESCRIPTION: This mod aims to re-imagine cards from Dungeons & Degenerate Gamblers as jokers
+--- MOD_AUTHOR: [Auraa_]
+--- MOD_DESCRIPTION: This mod aims to re-imagine cards from Dungeons & Degenerate Gamblers as jokers. 
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.2.2a
+--- VERSION: 0.2.2b
 --- BADGE_COLOR: 32751a
+
+local dndj_mod = SMODS.current_mod
+
+-- C O L O R S --
+loc_colour('eir')
+G.ARGS.LOC_COLOURS.eir = HEX'faaaab'
+
+dndj_mod.description_loc_vars = function()
+    return { background_colour = G.C.CLEAR, text_colour = G.C.WHITE, scale = 1.2 }
+end
+
 
 -- A T L A S E S --
 dndj = {}
@@ -57,7 +68,7 @@ to_big = to_big or function(num)
 end
 
 -- UnStable (support coming eventually) --
-local unstable = next(SMODS.find_mod('UnStable'))
+--local unstable = next(SMODS.find_mod('UnStable'))
 
 
 -- R A N K S --
@@ -67,6 +78,25 @@ local function is_decimal(card)
 	return SMODS.Ranks[card.base.value].is_decimal and not card.config.center.no_rank
 end
 
+--Hook for Poker Hand name
+
+local ref_get_poker_hand_info = G.FUNCS.get_poker_hand_info
+
+G.FUNCS.get_poker_hand_info = function(_cards)
+    local text, loc_disp_text, poker_hands, scoring_hand, disp_text = ref_get_poker_hand_info(_cards)
+    --print(disp_text)
+	
+    if string.find(disp_text, 'Straight') then
+        for i=1, #scoring_hand do
+			if is_decimal(scoring_hand[i]) then
+				loc_disp_text = string.gsub(loc_disp_text, 'Straight', 'Gay')
+				break
+			end
+		end
+    end
+
+    return text, loc_disp_text, poker_hands, scoring_hand, disp_text
+end
 
 -- "Prev" property, taken from UnStable --
 function init_prev_rank_data()
@@ -180,8 +210,8 @@ SMODS.Rank {
     card_key = '21',
     pos = {x = 16},
     nominal = 21,
-    next = { 'dndj_13' },
-    prev = {'dndj_11'},
+    --next = { 'dndj_13' },
+    --prev = {'dndj_11'},
     shorthand = '21',
     loc_txt = { name = "21"},
     in_pool = _rankCheck,
@@ -258,6 +288,7 @@ SMODS.Rank {
     card_key = '0',
     pos = {x = 20},
     nominal = 0,
+    straight_edge = true,
 
 
     next = { 'dndj_0.5', 'dndj_1' },
@@ -268,11 +299,11 @@ SMODS.Rank {
 
 -- Vanilla Rank Changes --
 -- Code taken from UnStable --
---SMODS.Ranks['2'].strength_effect = {
-  --  fixed = 2,
-   -- random = false,
-   -- ignore = false
---}
+SMODS.Ranks['2'].strength_effect = {
+    fixed = 2,
+    random = false,
+    ignore = false
+}
 SMODS.Ranks['2'].next = {'3', 'dndj_Pi'}
 
 SMODS.Ranks['3'].strength_effect = {
@@ -283,13 +314,13 @@ SMODS.Ranks['3'].strength_effect = {
 SMODS.Ranks['3'].next = {'dndj_Pi', '4'}
 
 --Change straight edge off from Ace, so it start to look at rank 0 instead
---SMODS.Ranks['Ace'].straight_edge = false
---SMODS.Ranks['Ace'].strength_effect = {
- --  fixed = 2,
-  -- random = false,
-   --ignore = false
---}
---SMODS.Ranks['Ace'].next = {'unstb_r2', '2', 'unstb_e'}--
+SMODS.Ranks['Ace'].straight_edge = false
+SMODS.Ranks['Ace'].strength_effect = {
+   fixed = 2,
+   random = false,
+   ignore = false
+}
+SMODS.Ranks['Ace'].next = {'2'}
 
 --Vanilla Rank Alteration for Set 2
 SMODS.Ranks['10'].next = {'Jack', 'dndj_11'}
@@ -300,7 +331,7 @@ local vanilla_rank_list = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack',
 for i=#vanilla_rank_list, 2, -1 do
 SMODS.Ranks[vanilla_rank_list[i]].prev = {vanilla_rank_list[i-1]}
 end
-SMODS.Ranks['2'].prev = {'Ace'}
+SMODS.Ranks['2'].prev = {'dndj_1','Ace'}
 
 --end
 
