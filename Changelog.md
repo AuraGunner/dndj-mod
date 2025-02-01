@@ -1,3 +1,12 @@
+0.2.2b
+----------------
+- Revamped mod description
+[BUGFIXES]
+- Fixed a crash when making straights with 11, 12 or 13
+- Straights now work with 0, 0.5 and 1
+[KNOWN BUGS]
+- Straights with A in the middle work even though they shouldn't (No idea how to fix this one)
+
 0.2.2a
 ----------------
 [COMPATIBILITY]
