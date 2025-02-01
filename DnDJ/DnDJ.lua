@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.2.1b
+--- VERSION: 0.2.2
 --- BADGE_COLOR: 32751a
 
 -- A T L A S E S --
@@ -115,6 +115,9 @@ local function _rankCheck(self, args)
 end
 
 
+
+-- Check if UnStable exists, if it does, do not generate these cards--
+if not unstable then
 -- Rank Implementation --
 SMODS.Rank {
     hc_atlas = 'rank_ex_hc',
@@ -280,12 +283,12 @@ SMODS.Ranks['3'].strength_effect = {
 SMODS.Ranks['3'].next = {'dndj_Pi', '4'}
 
 --Change straight edge off from Ace, so it start to look at rank 0 instead
-SMODS.Ranks['Ace'].straight_edge = false
-SMODS.Ranks['Ace'].strength_effect = {
-   fixed = 2,
-   random = false,
-   ignore = false
-}
+--SMODS.Ranks['Ace'].straight_edge = false
+--SMODS.Ranks['Ace'].strength_effect = {
+ --  fixed = 2,
+  -- random = false,
+   --ignore = false
+--}
 --SMODS.Ranks['Ace'].next = {'unstb_r2', '2', 'unstb_e'}--
 
 --Vanilla Rank Alteration for Set 2
@@ -299,12 +302,15 @@ SMODS.Ranks[vanilla_rank_list[i]].prev = {vanilla_rank_list[i-1]}
 end
 SMODS.Ranks['2'].prev = {'Ace'}
 
+end
 
 -- B O O S T E R S --
 
 
 -- Taken from BUNCO and UNSTABLE
 
+-- If Unstable is detected then do not generate these booster packs
+if not unstable then
 local contraband_booster_rate = {.5, .5, .25, .1}
 local contraband_booster_cost = {4, 4, 6, 8}
 local contraband_booster_name = {"Contraband Pack", "Contraband Pack", "Jumbo Contraband Pack", "Mega Contraband Pack"}
@@ -386,6 +392,7 @@ for i = 1, 4 do
 		weight = contraband_booster_rate[i],
     }
 end
+end
 
 -- S P E C T R A L --
 
@@ -425,6 +432,8 @@ SMODS.Consumable{
     end
 }
 
+--If Unstable detected do not generate this spectral
+if not unstable then
 SMODS.Consumable {
     set = 'Spectral', atlas = 'spectral',
     pos = {x = 1, y = 0},
@@ -523,7 +532,7 @@ SMODS.Consumable {
 
 	--pos = get_coordinates(4),
 }
-
+end
 
 
 
@@ -1039,25 +1048,25 @@ SMODS.Joker{
     cost = 7,
     blueprint_compat = true,
     pos = { x = 7, y = 0 },
-    config = { extra = {chips = 0, chip_mod = 10, mult = 0, mult_mod = 7} },
+    config = { extra = {chips = 0, chip_mod = 10} },
     loc_txt = {
         name = "Magic Trick",
         text = {
-            "This Joker gains {C:chips}+#2#{} Chips and {C:mult}+#4#{} Mult",
+            "This Joker gains {C:chips}+#2#{} Chips",
             "for every {C:attention}Queen of Diamonds{} or",
             "{C:attention}7 of Spades{} scored",
-            "{C:inactive}(Currently {}{C:chips}+#1#{}{C:inactive} Chips | {C:mult}+#3#{}{C:inactive} Mult)"
+            "{C:inactive}(Currently {}{C:chips}+#1#{}{C:inactive} Chips)"
         },
       },
 
     loc_vars = function(self, info_queue, card)
-        return { vars = {card.ability.extra.chips, card.ability.extra.chip_mod, card.ability.extra.mult, card.ability.extra.mult_mod} }
+        return { vars = {card.ability.extra.chips, card.ability.extra.chip_mod} }
     end,
 
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then
             if (context.other_card:get_id() == 7 and context.other_card:is_suit("Spades") or (context.other_card:get_id() == 12 and context.other_card:is_suit("Diamonds"))) then
-                card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
+                --card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
                 card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
                 return {
                 --chips = card.ability.extra.chips,
@@ -1069,23 +1078,9 @@ SMODS.Joker{
             end
         end
         if context.joker_main then
-            SMODS.eval_this(context.blueprint_card or card, {
-                chip_mod = card.ability.extra.chips,
-                message = localize {
-                    type = 'variable',
-                    key = 'a_chips',
-                    vars = {card.ability.extra.chips},
-                }
-            })
-
             return {
-                mult_mod = card.ability.extra.mult,
-                message = localize {
-                    type = 'variable',
-                    key = 'a_mult',
-                    vars = {card.ability.extra.mult},
-                },
-                card = card
+            chip_mod = card.ability.extra.chips,
+            --message = localize('k_upgrade_ex')
             }
         end
     end
@@ -1114,7 +1109,7 @@ SMODS.Joker{
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then
-            if context.other_card.base.value == "dndj_21" then
+            if context.other_card.base.value == "dndj_21" or "unstb_21" then
                 card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_mod
                 return {
                     --chips = card.ability.extra.chips,
