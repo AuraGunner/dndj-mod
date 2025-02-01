@@ -1,24 +1,29 @@
+0.2.2a
+----------------
+[COMPATIBILITY]
+- UnstableEX has updated to accomodate DNDJ, so obsoleted compatibility changes have been reverted
+
 0.2.2
 ----------------
 [COMPATIBILITY]
-Implemented compatibility with the UnStable mod, so that two copies of the same cards do not generate
+- Implemented compatibility with the UnStable mod, so that two copies of the same cards do not generate
 [BALANCE CHANGES]
-Magic Trick nerfed from (+10 Chips and +7 Mult) to (+10 Chips)
+- Magic Trick nerfed from (+10 Chips and +7 Mult) to (+10 Chips)
 
 0.2.1b
 ----------------
 [BALANCE CHANGES]
-Guillotine | Rare --> Uncommon (Cost 9 --> 5)
+- Guillotine | Rare --> Uncommon (Cost 9 --> 5)
 
 0.2.1a
 ----------------
-Fixed an oversight where Guillotine would multiply hand size forever
+- Fixed an oversight where Guillotine would multiply hand size forever
 
 0.2.1
 ----------------
-Art credits added (Killer Queen joker)
+- Art credits added (Killer Queen joker)
 [BALANCE CHANGES]
-Jack and the Beanstalk | Uncommon --> Rare (Cost 8 --> 10)
+- Jack and the Beanstalk | Uncommon --> Rare (Cost 8 --> 10)
 - Jack in a Box now gains +3 Mult per round instead of per hand
 
 
