@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.2.2
+--- VERSION: 0.2.2a
 --- BADGE_COLOR: 32751a
 
 -- A T L A S E S --
@@ -116,8 +116,8 @@ end
 
 
 
--- Check if UnStable exists, if it does, do not generate these cards--
-if not unstable then
+-- Check if UnStable exists, if it does, do not generate these cards (OBSOLETE)--
+--if not unstable then
 -- Rank Implementation --
 SMODS.Rank {
     hc_atlas = 'rank_ex_hc',
@@ -302,15 +302,15 @@ SMODS.Ranks[vanilla_rank_list[i]].prev = {vanilla_rank_list[i-1]}
 end
 SMODS.Ranks['2'].prev = {'Ace'}
 
-end
+--end
 
 -- B O O S T E R S --
 
 
 -- Taken from BUNCO and UNSTABLE
 
--- If Unstable is detected then do not generate these booster packs
-if not unstable then
+-- If Unstable is detected then do not generate these booster packs (OBSOLETE)
+--if not unstable then
 local contraband_booster_rate = {.5, .5, .25, .1}
 local contraband_booster_cost = {4, 4, 6, 8}
 local contraband_booster_name = {"Contraband Pack", "Contraband Pack", "Jumbo Contraband Pack", "Mega Contraband Pack"}
@@ -392,7 +392,7 @@ for i = 1, 4 do
 		weight = contraband_booster_rate[i],
     }
 end
-end
+--end
 
 -- S P E C T R A L --
 
@@ -432,8 +432,8 @@ SMODS.Consumable{
     end
 }
 
---If Unstable detected do not generate this spectral
-if not unstable then
+--If Unstable detected do not generate this spectral (OBSOLETE)
+--if not unstable then
 SMODS.Consumable {
     set = 'Spectral', atlas = 'spectral',
     pos = {x = 1, y = 0},
@@ -532,7 +532,7 @@ SMODS.Consumable {
 
 	--pos = get_coordinates(4),
 }
-end
+--end
 
 
 
