@@ -1,9 +1,10 @@
 # dndj-mod
 Dungeons &amp; Degenerate Jokers (for Steamodded)
 
-CURRENT VERSION - 0.2.2a
+CURRENT VERSION - 0.2.2b
 
 (Credit to eir_nya for the Killer Queen joker sprite)
+(Illegal cards implementation based on the UnStable mod by Kirbio)
 
 This mod aims to re-imagine the various cards from the blackjack rougelite "Dungeons & Degenerate Gamblers" as Jokers,
 with extra features maybe coming soon.
