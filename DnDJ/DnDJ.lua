@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.2.2b
+--- VERSION: 0.2.2c
 --- BADGE_COLOR: 32751a
 
 local dndj_mod = SMODS.current_mod
@@ -1140,7 +1140,7 @@ SMODS.Joker{
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then
-            if context.other_card.base.value == "dndj_21" or "unstb_21" then
+            if context.other_card.base.value == "dndj_21" or context.other_card.base.value == "unstb_21" then
                 card.ability.extra.x_mult = card.ability.extra.x_mult + card.ability.extra.x_mult_mod
                 return {
                     --chips = card.ability.extra.chips,
