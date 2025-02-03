@@ -1,3 +1,8 @@
+0.2.2c
+----------------
+[BUGFIXES]
+- Fixed bug where Musician joker would upgrade on every single card played
+
 0.2.2b
 ----------------
 - Revamped mod description
