@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.2.2c
+--- VERSION: 0.2.3
 --- BADGE_COLOR: 32751a
 
 local dndj_mod = SMODS.current_mod
@@ -57,6 +57,12 @@ SMODS.Atlas {
     key = 'spectral', 
     path = 'Spectrals.png', 
     px = 71, 
+    py = 95
+}
+SMODS.Atlas {
+    key = 'decks',
+    path = 'Backs.png',
+    px = 71,
     py = 95
 }
 
@@ -299,18 +305,18 @@ SMODS.Rank {
 
 -- Vanilla Rank Changes --
 -- Code taken from UnStable --
-SMODS.Ranks['2'].strength_effect = {
-    fixed = 2,
-    random = false,
-    ignore = false
-}
+--SMODS.Ranks['2'].strength_effect = {
+    --fixed = 2,
+    --random = false,
+    --ignore = false
+--}
 SMODS.Ranks['2'].next = {'3', 'dndj_Pi'}
 
-SMODS.Ranks['3'].strength_effect = {
-   fixed = 2,
-   random = false,
-   ignore = false
-}
+--SMODS.Ranks['3'].strength_effect = {
+  -- fixed = 2,
+   --random = false,
+   --ignore = false
+--}
 SMODS.Ranks['3'].next = {'dndj_Pi', '4'}
 
 --Change straight edge off from Ace, so it start to look at rank 0 instead
@@ -1110,7 +1116,8 @@ SMODS.Joker{
         end
         if context.joker_main then
             return {
-            chip_mod = card.ability.extra.chips,
+            message = localize { type = 'variable', key = 'a_chips', vars = { card.ability.extra.chips } },
+            chip_mod = card.ability.extra.chips
             --message = localize('k_upgrade_ex')
             }
         end
@@ -1326,3 +1333,59 @@ SMODS.Joker{
 
 -- D E C K S --
 -- [TO BE COMPLETED] --
+SMODS.Back{
+    key = 'nothings_deck',
+    atlas = 'decks',
+    pos = {x = 0, y = 0},
+    config = {ante_scaling = 1},
+    --config = { extra = {min_ante = 3} },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {self.config.ante_scaling} }
+    end,
+    loc_txt = {
+        name = "Nihilist Deck",
+        text = {
+            "Start with {C:attention}1{} card",
+            --"{C:mult}0.5X{} base Blind size",
+            "{C:attention}The Pillar{} and {C:attention}The Psychic{}",
+            "cannot appear until Ante 3"
+        },
+      },
+    apply = function(self)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                for k, v in pairs(G.playing_cards) do
+                    v.to_remove = true
+                end
+            --end
+            local i = 1
+            while i <= #G.playing_cards do
+                if G.playing_cards[i].to_remove then
+                    G.playing_cards[i]:remove()
+                else
+                    i = i + 1
+                end
+            end
+            --local eligible_suits = {}
+            --for _,k in ipairs(SMODS.Suit.obj_buffer) do
+               -- if not SMODS.Suits[k].in_pool or SMODS.Suits[k]:in_pool({ rank = 'dndj_0' }) then eligible_suits[#eligible_suits+1] = SMODS.Suits[k].card_key end
+               -- end
+            --local _suit = pseudorandom_element(eligible_suits, pseudoseed('zero'))
+            local _card = create_playing_card({
+                front = G.P_CARDS.H_dndj_0, 
+                center = G.P_CENTERS.c_base}, G.deck, nil, nil, nil)
+            _card:set_ability(G.P_CENTERS.m_stone, nil, true)
+            _card:set_edition('e_holo', true)
+            G.GAME.starting_deck_size = #G.playing_cards
+            SMODS.Blind:take_ownership('bl_psychic', {boss = {min = 3, max = 10}}, true)
+            SMODS.Blind:take_ownership('bl_pillar', {boss = {min = 3, max = 10}}, true)
+            return true
+        end
+        }))
+    end,
+    trigger_effect = function(self, args)
+    end
+
+}
+
+
