@@ -1347,8 +1347,8 @@ SMODS.Back{
         text = {
             "Start with {C:attention}1{} card",
             --"{C:mult}0.5X{} base Blind size",
-            "{C:attention}The Pillar{} and {C:attention}The Psychic{}",
-            "cannot appear until Ante 3"
+            --"{C:attention}The Pillar{} and {C:attention}The Psychic{}",
+            --"cannot appear until Ante 3"
         },
       },
     apply = function(self)
