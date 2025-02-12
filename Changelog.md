@@ -1,3 +1,10 @@
+0.2.3a
+----------------
+[BUGFIXES]
+- The Psychic and The Pillar blinds no longer "undiscover" themselves
+[BALANCE CHANGES]
+- Nihilist Deck now just starts with 1 card because this deck is OP as shit lmao it doesnt need the ante 3 stipulation
+
 0.2.3
 ----------------
 [BUGFIXES]
