@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.2.3
+--- VERSION: 0.2.3a
 --- BADGE_COLOR: 32751a
 
 local dndj_mod = SMODS.current_mod
@@ -1377,8 +1377,8 @@ SMODS.Back{
             _card:set_ability(G.P_CENTERS.m_stone, nil, true)
             _card:set_edition('e_holo', true)
             G.GAME.starting_deck_size = #G.playing_cards
-            SMODS.Blind:take_ownership('bl_psychic', {boss = {min = 3, max = 10}}, true)
-            SMODS.Blind:take_ownership('bl_pillar', {boss = {min = 3, max = 10}}, true)
+            --SMODS.Blind:take_ownership('bl_psychic', {boss = {min = 3, max = 10}}, true)
+            --SMODS.Blind:take_ownership('bl_pillar', {boss = {min = 3, max = 10}}, true)
             return true
         end
         }))
