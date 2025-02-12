@@ -1,3 +1,11 @@
+0.2.3
+----------------
+[BUGFIXES]
+- Magic Trick now displays gained chips as intended
+- Fixed bug where using strength on a 2 turns it into a Pi instead of a 3
+[NEW DECK!]
+- Nihilist Deck: Start with only 1 card (a Holographic Stone 0), and The Pillar/The Psychic are disabled until Ante 3
+
 0.2.2c
 ----------------
 [BUGFIXES]
