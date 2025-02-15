@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.2.3a-rev
+--- VERSION: 0.2.4
 --- BADGE_COLOR: 32751a
 
 local dndj_mod = SMODS.current_mod
@@ -14,6 +14,9 @@ local dndj_mod = SMODS.current_mod
 -- C O L O R S --
 loc_colour('eir')
 G.ARGS.LOC_COLOURS.eir = HEX'faaaab'
+
+loc_colour('explosive')
+G.ARGS.LOC_COLOURS.explosive = HEX'e07c2f'
 
 dndj_mod.description_loc_vars = function()
     return { background_colour = G.C.CLEAR, text_colour = G.C.WHITE, scale = 1.2 }
@@ -65,6 +68,17 @@ SMODS.Atlas {
     px = 71,
     py = 95
 }
+SMODS.Atlas {
+    key = 'stickers',
+    path = 'Stickers.png',
+    px = 71,
+    py = 95
+}
+
+-- S O U N D S --
+
+SMODS.Sound({key = 'badexplosion', path = 'snd_badexplosion.wav'})
+
 
 -- C O M P A T I B I L I T Y --
 
@@ -72,10 +86,6 @@ SMODS.Atlas {
 to_big = to_big or function(num)
     return num
 end
-
--- UnStable (support coming eventually) --
---local unstable = next(SMODS.find_mod('UnStable'))
-
 
 -- R A N K S --
 
@@ -571,7 +581,56 @@ SMODS.Consumable {
 }
 --end
 
+-- S T I C K E R S --
 
+SMODS.Sticker{
+    key = 'explosive',
+    atlas = 'stickers',
+    pos = {x = 0, y = 0},
+    loc_txt = {
+        name="Explosive",
+        label = 'Explosive',
+                text={
+                    "This Joker will destroy itself",
+                    "at the end of the round"
+                },
+            },
+    badge_colour = HEX('e07c2f'),
+    hide_badge = false,
+    default_compat = true,
+    needs_enable_flag = false,
+    sets = {Joker = true},
+    rate = 0,
+    calculate = function(self, card, context)
+        if context.end_of_round and not context.blueprint and not (context.individual or context.repetition) then
+            card.sell_cost = 0
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound('dndj_badexplosion', 1, 0.4)
+                    card.T.r = -0.2
+                    card:juice_up(0.3,0.4)
+                    card.states.drag.is = true
+                    card.children.center.pinch.x = true
+                    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                                                func = function()
+                                                    G.jokers:remove_card(card)
+                                                    card:remove()
+                                                    card = nil
+                                                    return true; end }))
+                    return true
+                end
+            }))
+            return {
+                message = "B O O M !",
+                colour = G.C.RED,
+                card = card
+            }
+        end
+    end,
+    apply = function(self, card, val)
+        card.ability[self.key] = val
+    end,
+}
 
 -- J O K E R S --
 
@@ -1321,7 +1380,123 @@ SMODS.Joker{
             }
             end
         end
+}
 
+SMODS.Joker{
+    key = 'glitched_joker',
+    rarity = 3,
+    atlas = 'jokers_atlas',
+    cost = 8,
+    pos = { x = 4, y = 1 },
+    config = { extra = {generated_cards = 2} },
+    loc_txt = {
+        name = "Glitched Joker",
+        text = {
+            "Creates {C:attention}#1#{} random",
+            "{C:explosive}Explosive{} {C:dark_edition}Negative{} Jokers?",
+            "at the end of the round"
+        },
+      },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card.ability.extra.generated_cards} }
+    end,
+
+    calculate = function(self, card, context)
+        --if context.ending_shop then
+        if context.end_of_round and not context.blueprint and not (context.individual or context.repetition) then
+        --if context.first_hand_drawn then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound('tarot1')
+                    --card.T.r = -0.2
+                    --card:juice_up(0.3, 0.4)
+                    --card.states.drag.is = true
+                    --card.children.center.pinch.x = true
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.3,
+                        blockable = false,
+                        func = function()
+                            --G.jokers:remove_card(card)
+                            --card:remove()
+ 
+                            if #G.jokers.cards + G.GAME.joker_buffer <= 9999 then
+                                local jokers_to_create = math.min(1,
+                                    G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+                                G.GAME.joker_buffer = G.GAME.joker_buffer + jokers_to_create
+                                
+                                for i = 1, card.ability.extra.generated_cards, 1 do
+                                G.E_MANAGER:add_event(Event({
+                                    func = function()
+                                        local random = math.random()
+                                        local theFunny = 'Joker'
+                                        local k = nil
+                                        if random < 0.9 then
+                                            theFunny = 'Joker'
+                                            k = G.P_CENTER_POOLS.Joker[math.random(#G.P_CENTER_POOLS.Joker)].key
+                                        elseif random < 0.93 then
+                                            theFunny = 'Tarot'
+                                        elseif random < 0.96 then
+                                            theFunny = 'Planet'
+                                        elseif random < 0.99 then
+                                            theFunny = 'Spectral'
+                                        elseif random < 0.995 then
+                                            theFunny = 'Base'
+                                        elseif random < 0.9975 then
+                                            theFunny = 'Voucher'
+                                        elseif random < 1 then
+                                            theFunny = 'Booster'
+                                        end
+                                        --local random = math.random()
+                                        --if random < 0.9 then
+                                        --    k = G.P_CENTER_POOLS.Joker[math.random(#G.P_CENTER_POOLS.Joker)].key
+                                       -- end
+                                        --local randomJoker = math.random() * #G.P_CENTER_POOLS.Joker
+                                        --for i = 1, randomJoker do
+                                          -- local k = G.P_CENTER_POOLS.Joker[i].key
+                                        --end
+                                        --local card = create_card('Joker', G.jokers, nil, 0, nil, nil, 'j_pot_like_weed_get_it_hah_ha', 'random')--
+                                        local _card = SMODS.create_card({
+                                            set = theFunny,
+                                            area = G.jokers,
+                                            edition = 'e_negative',
+                                            --rarity = 5,
+                                            --legendary = true,
+                                            soulable = true,
+                                            --stickers = {'dndj_explosive'}
+                                            --key = G.P_CENTER_POOLS.Joker[math.random(#G.P_CENTER_POOLS.Joker)].key
+                                            key = k
+                                        })
+                                        _card.sell_cost = 0
+                                        _card:set_eternal(_eternal)
+                                        _card:add_to_deck()
+                                        SMODS.Stickers['dndj_explosive']:apply(_card, true)
+                                        G.jokers:emplace(_card)
+                                        _card:start_materialize()
+                                        G.GAME.joker_buffer = 0
+                                        return {
+                                            message = "TEST",
+                                            colour = G.C.MULT,
+                                            card = card
+                                        }
+                                    end
+                                }))
+                            end
+                            end
+                            return true;
+                        end
+                    }))
+                    return true
+                end
+            }))
+
+            return {
+                --message = "TEST",
+                --colour = G.C.MULT,
+                card = card
+            }
+        end
+    end
 
 }
 
@@ -1337,16 +1512,16 @@ SMODS.Back{
     key = 'nothings_deck',
     atlas = 'decks',
     pos = {x = 0, y = 0},
-    config = {ante_scaling = 1},
+    config = {ante_scaling = 0.75, joker_slot = 0},
     --config = { extra = {min_ante = 3} },
     loc_vars = function(self, info_queue, card)
-        return { vars = {self.config.ante_scaling} }
+        return { vars = {self.config.ante_scaling, self.config.joker_slot} }
     end,
     loc_txt = {
         name = "Nihilist Deck",
         text = {
             "Start with {C:attention}1{} card",
-            --"{C:mult}0.5X{} base Blind size",
+            "{C:mult}0.75X{} base Blind size",
             "{C:attention}The Pillar{} and {C:attention}The Psychic{}",
             "cannot appear until Ante 3"
         },
