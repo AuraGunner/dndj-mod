@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.2.5
+--- VERSION: 0.2.5b
 --- BADGE_COLOR: 32751a
 
 local dndj_mod = SMODS.current_mod
@@ -83,9 +83,9 @@ SMODS.Sound({key = 'badexplosion', path = 'snd_badexplosion.wav'})
 -- C O M P A T I B I L I T Y --
 
 --Talisman
-to_big = to_big or function(num)
-    return num
-end
+--to_big = to_big or function(num)
+--    return num
+--end
 
 -- R A N K S --
 
