@@ -1,3 +1,13 @@
+0.2.5
+----------------
+[NEW RARITY!]
+- Based on the rarity of the same name from the Buffoonery mod, Special rarity jokers cannot spawn naturally and can only be created by certain decks
+[NEW JOKER!]
+- The Super Glitched Joker is an enhanced version of the Glitched Joker, spawning 8 instead of 2. This can only be obtained in the Glitched Deck
+[2 NEW DECKS!]
+- The Glitched Deck starts you with a Super Glitched Joker but only 2 Joker slots
+- The Random Deck randomizes EVERY starting condition in a run
+
 0.2.4
 ----------------
 [NEW JOKER!]
