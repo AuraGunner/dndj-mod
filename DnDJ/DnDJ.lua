@@ -1701,7 +1701,7 @@ SMODS.Back{
     key = 'glitched_deck',
     atlas = 'decks',
     pos = {x = 1, y = 0},
-    config = {hands = 1, discards = 1, hand_size = 2, ante_scaling = 1, joker_slot = -3},
+    config = {hands = 0, discards = 0, hand_size = 0, ante_scaling = 1, joker_slot = -3},
     --config = { extra = {min_ante = 3} },
     loc_vars = function(self, info_queue, card)
         return { vars = {self.config.hands, self.config.discards, self.config.hand_size, self.config.ante_scaling, self.config.joker_slot} }
@@ -1709,9 +1709,9 @@ SMODS.Back{
     loc_txt = {
         name = "Glitched Deck",
         text = {
-            "{C:blue}+1{} hand every round",
-            "{C:red}+1{} discard every round",
-            "{C:attention}+2{} hand size",
+            --"{C:blue}+1{} hand every round",
+           -- "{C:red}+1{} discard every round",
+            --"{C:attention}+2{} hand size",
             "{C:red}-3{} Joker slots",
             "Start with an {C:attention}Eternal{}",
             "{C:red}Super Glitched Joker{}",
