@@ -1659,7 +1659,7 @@ local function distribute_stats()
     e = math.random(0,10)
     f = math.random(0,5)
 --If the stat total is below 14 or above 20, randomize again
-while a + b + c + d + e + f <= 14 and a + b + c + d + e + f >= 20 do
+while a + b + c + d + e + f <= 14 or a + b + c + d + e + f >= 20 do
     a = math.random(0,5)
     b = math.random(0,8)
     c = math.random(0,8)
