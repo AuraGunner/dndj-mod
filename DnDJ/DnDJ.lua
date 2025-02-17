@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.2.5b
+--- VERSION: 0.2.6
 --- BADGE_COLOR: 32751a
 
 local dndj_mod = SMODS.current_mod
@@ -619,7 +619,7 @@ SMODS.Sticker{
     rate = 0,
     calculate = function(self, card, context)
         if context.end_of_round and not context.blueprint and not (context.individual or context.repetition) then
-            card.sell_cost = 0
+            card.sell_cost = -1
             G.E_MANAGER:add_event(Event({
                 func = function()
                     play_sound('dndj_badexplosion', 1, 0.4)
@@ -1408,9 +1408,12 @@ SMODS.Joker{
     loc_txt = {
         name = "Glitched Joker",
         text = {
-            "Creates {C:attention}#1#{} random",
-            "{C:explosive}Explosive{} {C:dark_edition}Negative{} Jokers?",
-            "at the end of the round"
+            "Creates {C:attention}#1#{} random {C:explosive}Explosive{} {C:dark_edition}Negative{}",
+            "Jokers? at the end of the round",
+            "{C:inactive}Has an unmodifiable {C:green}1 in 10{}",
+            "{C:inactive}chance to generate a non-Joker{}",
+            "{C:inactive}Boosters and Vouchers generated this way{}",
+            "{C:inactive}add{}{C:attention} +1 permanent Joker slot{}{C:inactive} when destroyed{}"
         },
       },
     loc_vars = function(self, info_queue, card)
@@ -1483,7 +1486,7 @@ SMODS.Joker{
                                             --key = G.P_CENTER_POOLS.Joker[math.random(#G.P_CENTER_POOLS.Joker)].key
                                             key = k
                                         })
-                                        _card.sell_cost = 0
+                                        _card.sell_cost = -1
                                         _card:set_eternal(_eternal)
                                         _card:add_to_deck()
                                         SMODS.Stickers['dndj_explosive']:apply(_card, true)
@@ -1516,124 +1519,7 @@ SMODS.Joker{
 
 }
 
-SMODS.Joker{
-    key = 'super_glitched_joker',
-    rarity = "dndj_special",
-    atlas = 'jokers_atlas',
-    cost = 32,
-    pos = { x = 4, y = 1 },
-    config = { extra = {generated_cards = 8} },
-    loc_txt = {
-        name = "Super Glitched Joker",
-        text = {
-            "Creates {C:attention}#1#{} random",
-            "{C:explosive}Explosive{} {C:dark_edition}Negative{} Jokers?",
-            "at the end of the round",
-            "{C:inactive}Sprite is placeholder for now{}"
-        },
-      },
-    loc_vars = function(self, info_queue, card)
-        return { vars = {card.ability.extra.generated_cards} }
-    end,
 
-    calculate = function(self, card, context)
-        --if context.ending_shop then
-        if context.end_of_round and not context.blueprint and not (context.individual or context.repetition) then
-        --if context.first_hand_drawn then
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    play_sound('tarot1')
-                    --card.T.r = -0.2
-                    --card:juice_up(0.3, 0.4)
-                    --card.states.drag.is = true
-                    --card.children.center.pinch.x = true
-                    G.E_MANAGER:add_event(Event({
-                        trigger = 'after',
-                        delay = 0.3,
-                        blockable = false,
-                        func = function()
-                            --G.jokers:remove_card(card)
-                            --card:remove()
- 
-                            if #G.jokers.cards + G.GAME.joker_buffer <= 9999 then
-                                local jokers_to_create = math.min(1,
-                                    G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-                                G.GAME.joker_buffer = G.GAME.joker_buffer + jokers_to_create
-                                
-                                for i = 1, card.ability.extra.generated_cards, 1 do
-                                G.E_MANAGER:add_event(Event({
-                                    func = function()
-                                        local random = math.random()
-                                        local theFunny = 'Joker'
-                                        local k = nil
-                                        if random < 0.9 then
-                                            theFunny = 'Joker'
-                                            k = G.P_CENTER_POOLS.Joker[math.random(#G.P_CENTER_POOLS.Joker)].key
-                                        elseif random < 0.93 then
-                                            theFunny = 'Tarot'
-                                        elseif random < 0.96 then
-                                            theFunny = 'Planet'
-                                        elseif random < 0.99 then
-                                            theFunny = 'Spectral'
-                                        elseif random < 0.995 then
-                                            theFunny = 'Base'
-                                        elseif random < 0.9975 then
-                                            theFunny = 'Voucher'
-                                        elseif random < 1 then
-                                            theFunny = 'Booster'
-                                        end
-                                        --local random = math.random()
-                                        --if random < 0.9 then
-                                        --    k = G.P_CENTER_POOLS.Joker[math.random(#G.P_CENTER_POOLS.Joker)].key
-                                       -- end
-                                        --local randomJoker = math.random() * #G.P_CENTER_POOLS.Joker
-                                        --for i = 1, randomJoker do
-                                          -- local k = G.P_CENTER_POOLS.Joker[i].key
-                                        --end
-                                        --local card = create_card('Joker', G.jokers, nil, 0, nil, nil, 'j_pot_like_weed_get_it_hah_ha', 'random')--
-                                        local _card = SMODS.create_card({
-                                            set = theFunny,
-                                            area = G.jokers,
-                                            edition = 'e_negative',
-                                            --rarity = 5,
-                                            --legendary = true,
-                                            soulable = true,
-                                            --stickers = {'dndj_explosive'}
-                                            --key = G.P_CENTER_POOLS.Joker[math.random(#G.P_CENTER_POOLS.Joker)].key
-                                            key = k
-                                        })
-                                        _card.sell_cost = 0
-                                        _card:set_eternal(_eternal)
-                                        _card:add_to_deck()
-                                        SMODS.Stickers['dndj_explosive']:apply(_card, true)
-                                        G.jokers:emplace(_card)
-                                        _card:start_materialize()
-                                        G.GAME.joker_buffer = 0
-                                        return {
-                                            message = "TEST",
-                                            colour = G.C.MULT,
-                                            card = card
-                                        }
-                                    end
-                                }))
-                            end
-                            end
-                            return true;
-                        end
-                    }))
-                    return true
-                end
-            }))
-
-            return {
-                --message = "TEST",
-                --colour = G.C.MULT,
-                card = card
-            }
-        end
-    end
-
-}
 
 
 
@@ -1701,7 +1587,7 @@ SMODS.Back{
     key = 'glitched_deck',
     atlas = 'decks',
     pos = {x = 1, y = 0},
-    config = {hands = 0, discards = 0, hand_size = 0, ante_scaling = 1, joker_slot = -3},
+    config = {hands = 0, discards = 0, hand_size = 0, ante_scaling = 1, joker_slot = 0},
     --config = { extra = {min_ante = 3} },
     loc_vars = function(self, info_queue, card)
         return { vars = {self.config.hands, self.config.discards, self.config.hand_size, self.config.ante_scaling, self.config.joker_slot} }
@@ -1712,9 +1598,9 @@ SMODS.Back{
             --"{C:blue}+1{} hand every round",
            -- "{C:red}+1{} discard every round",
             --"{C:attention}+2{} hand size",
-            "{C:red}-3{} Joker slots",
+            --"{C:red}-3{} Joker slots",
             "Start with an {C:attention}Eternal{}",
-            "{C:red}Super Glitched Joker{}",
+            "{C:red} Glitched Joker{}",
         },
       },
     apply = function(self)
@@ -1730,7 +1616,7 @@ SMODS.Back{
                     --soulable = true,
                     stickers = {'eternal'},
                     --key = G.P_CENTER_POOLS.Joker[math.random(#G.P_CENTER_POOLS.Joker)].key
-                    key = 'j_dndj_super_glitched_joker'
+                    key = 'j_dndj_glitched_joker'
                 })
                 --_card.sell_cost = 0
                 --_card:set_eternal(_eternal)
