@@ -1,3 +1,8 @@
+0.2.6
+----------------
+- Completely reworked the Glitched Deck, and removed the Super Glitched Joker from the game
+- Glitched Joker now has a more detailed explanation
+
 0.2.5
 ----------------
 [NEW RARITY!]
