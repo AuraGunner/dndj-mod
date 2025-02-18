@@ -1,3 +1,7 @@
+0.2.6b
+----------------
+- Random deck nerfed AGAIN
+
 0.2.6a
 ----------------
 - Random deck nerfed
