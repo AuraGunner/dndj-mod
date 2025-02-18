@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.2.6
+--- VERSION: 0.2.6b
 --- BADGE_COLOR: 32751a
 
 local dndj_mod = SMODS.current_mod
@@ -1658,8 +1658,8 @@ local function distribute_stats()
     d = math.random(0,10)
     e = math.random(0,10)
     f = math.random(0,5)
---If the stat total is below 14 or above 20, randomize again
-while a + b + c + d + e + f <= 14 or a + b + c + d + e + f >= 20 do
+--If the stat total is below 14 or above 18, randomize again
+while a + b + c + d + e + f <= 14 or a + b + c + d + e + f >= 18 do
     a = math.random(0,5)
     b = math.random(0,8)
     c = math.random(0,8)
