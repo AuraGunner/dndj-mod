@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.3a
+--- VERSION: 0.3b
 --- BADGE_COLOR: 32751a
 
 local dndj_mod = SMODS.current_mod
@@ -306,7 +306,7 @@ SMODS.Rank {
     key = '0',
     card_key = '0',
     pos = {x = 20},
-    nominal = 0,
+    nominal = 0.0001,
     straight_edge = true,
 
 
