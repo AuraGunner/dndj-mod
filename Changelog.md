@@ -1,3 +1,10 @@
+0.3.1
+----------------
+- Batty Joker and Underhanded Joker now function properly
+- Batty Joker and Underhanded Joker resprited
+- Blackjack hand is no longer hidden
+- Europa and Io are now called moons instead of planets
+
 0.3
 ----------------
 [NEW HANDS!]
