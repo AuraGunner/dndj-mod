@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.3
+--- VERSION: 0.3a
 --- BADGE_COLOR: 32751a
 
 local dndj_mod = SMODS.current_mod
@@ -1810,7 +1810,7 @@ SMODS.Joker{
             local extent = function(table)
                 return (#table ~= 0)
             end
-            if (#hand <= 3) then
+            if (#hand >= 1) then
                 if extent(get_blackjack(hand)) then
                     valid = true
                 end
@@ -1912,7 +1912,7 @@ SMODS.Joker{
             local extent = function(table)
                 return (#table ~= 0)
             end
-            if (#hand <= 3) then
+            if (#hand >= 1) then
                 if extent(get_blackjack(hand)) then
                     valid = true
                 end
@@ -2021,7 +2021,7 @@ SMODS.Joker{
             local extent = function(table)
                 return (#table ~= 0)
             end
-            if (#hand <= 3) then
+            if (#hand >= 1) then
                 if extent(get_blackjack(hand)) then
                     valid = true
                 end
