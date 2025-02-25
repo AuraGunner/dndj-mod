@@ -1,7 +1,7 @@
 # dndj-mod
 Dungeons &amp; Degenerate Jokers (for Steamodded)
 
-CURRENT VERSION - 0.3a
+CURRENT VERSION - 0.3b
 
 (Credit to eir_nya for the Killer Queen joker sprite)
 (Illegal cards implementation based on the UnStable mod by Kirbio)
