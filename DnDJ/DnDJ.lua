@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.3b
+--- VERSION: 0.3.1
 --- BADGE_COLOR: 32751a
 
 local dndj_mod = SMODS.current_mod
@@ -411,7 +411,7 @@ if not hit then
             { 'D_K', true },
         },
         above_hand = "Two Pair",
-        visible = false,
+        --visible = false,
         loc_txt = {
             name = "Blackjack",
             description = { 
@@ -588,12 +588,15 @@ SMODS.Consumable{
         local hand = self.config.hand_type
         return { vars = {G.GAME.hands[hand].level,localize(hand, 'poker_hands'), G.GAME.hands[hand].l_mult, G.GAME.hands[hand].l_chips, colours = {(G.GAME.hands[hand].level==1 and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[math.min(7, G.GAME.hands[hand].level)])}} }
     end,
-    in_pool = function(self)
-        if G.GAME.hands["dndj_blackjack"].played > 0 then
-            return true
-        end
-        return false
+    set_card_type_badge = function(self, card, badges)
+        badges[1] = create_badge('Moon', get_type_colour(self or card.config, card), nil, 1.2)
     end
+    --in_pool = function(self)
+    --    if G.GAME.hands["dndj_blackjack"].played > 0 then
+    --        return true
+    --    end
+    --    return false
+    --end
 }
 SMODS.Consumable{
     set = 'Planet', atlas = 'planet',
@@ -613,6 +616,9 @@ SMODS.Consumable{
     loc_vars = function(self, info_queue, card)
         local hand = self.config.hand_type
         return { vars = {G.GAME.hands[hand].level,localize(hand, 'poker_hands'), G.GAME.hands[hand].l_mult, G.GAME.hands[hand].l_chips, colours = {(G.GAME.hands[hand].level==1 and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[math.min(7, G.GAME.hands[hand].level)])}} }
+    end,
+    set_card_type_badge = function(self, card, badges)
+        badges[1] = create_badge('Moon', get_type_colour(self or card.config, card), nil, 1.2)
     end,
     in_pool = function(self)
         if G.GAME.hands["dndj_flushjack"].played > 0 then
