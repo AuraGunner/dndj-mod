@@ -1,3 +1,8 @@
+0.3.2a
+----------------
+[BUGFIXES]
+- Fixed a bug where Blueprint would not work with Stone Age Joker
+
 0.3.2
 ----------------
 [NEW JOKERS!]
