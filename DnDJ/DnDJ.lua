@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.3.2
+--- VERSION: 0.3.2a
 --- BADGE_COLOR: 32751a
 
 local dndj_mod = SMODS.current_mod
@@ -1768,16 +1768,19 @@ SMODS.Joker{
     end,
 
     calculate = function(self, card, context)
-        if context.individual and context.cardarea == G.play and context.other_card.ability.name == 'Stone Card' then
+        if context.individual and context.cardarea == G.play and context.other_card.ability.name == 'Stone Card' and not context.blueprint then
             card.ability.extra.stones = card.ability.extra.stones + 1
         end
         if context.joker_main and card.ability.extra.stones > 0 then
-            card.ability.extra.stones = 0
             return {
-                x_mult_mod = card.ability.extra.x_mult
+                x_mult_mod = card.ability.extra.x_mult,
+                card = card
             }
             end
+        if context.after then
+            card.ability.extra.stones = 0
         end
+     end
 }
 
 SMODS.Joker{
