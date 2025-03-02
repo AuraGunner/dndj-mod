@@ -2,6 +2,7 @@
 ----------------
 [BALANCE CHANGES]
 - Nihilist deck reworked yet again. Now, instead of 0.75x ante scaling, you start at ante 0. Also the pillar is now forbidden from appearing ever (or at least is supposed to be)
+  
 [BUGFIXES]
 - Jack and the Beanstalk formatting changed yet again
 - Fixed bug where Even Steven and Odd Todd works on Stone Cards
