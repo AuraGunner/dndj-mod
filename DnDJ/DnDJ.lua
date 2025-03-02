@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.3.2a
+--- VERSION: 0.3.3
 --- BADGE_COLOR: 32751a
 
 local dndj_mod = SMODS.current_mod
@@ -20,7 +20,7 @@ loc_colour('explosive')
 G.ARGS.LOC_COLOURS.explosive = HEX'e07c2f'
 
 dndj_mod.description_loc_vars = function()
-    return { background_colour = G.C.CLEAR, text_colour = G.C.WHITE, scale = 1.2 }
+    return { background_colour = G.C.CLEAR, text_colour = G.C.WHITE, scale = 1 }
 end
 
 
@@ -937,7 +937,7 @@ if not unstable then
             if context.individual and context.cardarea == G.play then
                 local nominal = context.other_card.base.nominal
                 
-                if not context.other_card.config.center.no_rank and (dndj_global.odd[nominal]) then
+                if not context.other_card.ability.name == 'Stone Card' and (dndj_global.odd[nominal]) then
                     return {
                       chips = card.ability.extra.chips,
                       card = card
@@ -975,7 +975,7 @@ if not unstable then
                 local nominal = context.other_card.base.nominal
                 local value = context.other_card.base.value
                 
-                if not context.other_card.config.center.no_rank and not dndj_global.face[value] and (dndj_global.even[nominal]) then
+                if not context.other_card.ability.name == 'Stone Card' and not dndj_global.face[value] and (dndj_global.even[nominal]) then
                     return {
                       mult = card.ability.extra.mult,
                       card = card
@@ -1322,8 +1322,8 @@ SMODS.Joker{
     config = { extra = {repetitions = 2} },
     loc_txt = {
         name = "Jack and the Beanstalk",
-        text = {"Retrigger each played",
-         "{C:attention}Jack{} twice"},
+        text = {"Retrigger each",
+         "played {C:attention}Jack{} twice"},
     },
     loc_vars = function(self, info_queue, card)
         return { vars = {card.ability.extra.repetitions} }
@@ -2366,8 +2366,9 @@ SMODS.Joker{
 SMODS.Back{
     key = 'nothings_deck',
     atlas = 'decks',
+    discovered = true,
     pos = {x = 0, y = 0},
-    config = {ante_scaling = 0.75, joker_slot = 0},
+    config = {ante_scaling = 1, joker_slot = 0},
     --config = { extra = {min_ante = 3} },
     loc_vars = function(self, info_queue, card)
         return { vars = {self.config.ante_scaling, self.config.joker_slot} }
@@ -2376,12 +2377,17 @@ SMODS.Back{
         name = "Nihilist Deck",
         text = {
             "Start with {C:attention}1{} card",
-            "{C:mult}0.75X{} base Blind size",
-            "{C:attention}The Pillar{} and {C:attention}The Psychic{}",
-            "cannot appear until Ante 3"
+            --"{C:mult}0.5X{} base Blind size",
+            "Starts at {C:attention}Ante 0{}",
+            "{C:attention}The Pillar{} cannot appear"
         },
       },
     apply = function(self)
+        --G.GAME.HUD:recalculate()
+        G.GAME.round_resets.ante = 0
+        G.GAME.round_resets.blind_ante = 0
+        ease_ante(0)
+        SMODS.Blind:take_ownership('bl_pillar', {boss = {min = 9e999, max = 9e999}})
         G.E_MANAGER:add_event(Event({
             func = function()
                 for k, v in pairs(G.playing_cards) do
@@ -2408,8 +2414,6 @@ SMODS.Back{
             _card:set_edition('e_holo', true)
             --SMODS.Stickers['eternal']:apply(_card, true)
             G.GAME.starting_deck_size = #G.playing_cards
-            SMODS.Blind:take_ownership('bl_psychic', {boss = {min = 3, max = 10}})
-            SMODS.Blind:take_ownership('bl_pillar', {boss = {min = 3, max = 10}})
             return true
         end
         }))
@@ -2420,6 +2424,7 @@ SMODS.Back{
 -- Glitched Deck--
 SMODS.Back{
     key = 'glitched_deck',
+    discovered = true,
     atlas = 'decks',
     pos = {x = 1, y = 0},
     config = {hands = 0, discards = 0, hand_size = 0, ante_scaling = 1, joker_slot = 0},
@@ -2511,6 +2516,7 @@ SMODS.Back{
     --math.randomseed(os.time()),
     --distribute_stats(),
     key = 'random_deck',
+    discovered = true,
     atlas = 'decks',
     pos = {x = 2, y = 0},
     --config = {dollars = math.random(-4,6), hands = math.random(-2,6), discards = math.random(-1,7), hand_size = math.random(-3,7),  joker_slot = math.random(-5,5), consumable_slot = math.random(-2,3), ante_scaling = 0.5+math.random()*1.5, win_ante = math.random(6,10)},
