@@ -1,7 +1,7 @@
 # dndj-mod
 Dungeons &amp; Degenerate Jokers (for Steamodded)
 
-CURRENT VERSION - 0.3.2
+CURRENT VERSION - 0.3.2a
 (Credits can be found in the mod description in-game)
 
 This mod aims to re-imagine the various cards from the blackjack rougelite "Dungeons & Degenerate Gamblers" as Jokers,
