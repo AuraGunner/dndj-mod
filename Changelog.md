@@ -3,14 +3,18 @@
 [NEW JOKERS!]
 - Scrooge McJoker ($x1.25 if played hand contains a Blackjack Flush)
 - King of the Hill (x5 Mult if there is only 1 face card in your deck)
+  
 [VANILLA JOKER CHANGES!]
 - Fibonacci, Even Steven, Odd Todd, and Hack now account for modded ranks
+  
 [BALANCE CHANGES]
 - Pot and Glitched Joker nerfed
+  
 [BUGFIXES]
 - Fixed formatting for Jack and the Beanstalk description
 - Fixed bug where Musician would upgrade twice with Blueprint (at least i hope its fixed!!)
 - Attempted to fix bug where '0' cards are just completely non-functional
+  
 [OTHER STUFF]
 - Changed the colors for inside the Contraband Pack
 
