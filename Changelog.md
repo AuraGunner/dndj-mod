@@ -1,3 +1,7 @@
+0.3.4a
+----------------
+Contraband packs no longer appear on the Full deck
+
 0.3.4
 ----------------
 [NEW JOKERS!]
