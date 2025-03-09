@@ -1,7 +1,7 @@
 # dndj-mod
 Dungeons &amp; Degenerate Jokers (for Steamodded)
 
-CURRENT VERSION - 0.3.4
+CURRENT VERSION - 0.3.4a
 
 (Credits can be found in the mod description in-game)
 
