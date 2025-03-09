@@ -6,7 +6,7 @@
 --- DEPENDENCIES: [Talisman]
 --- PREFIX: dndj
 --- LOADER_VERSION_GEQ: 1.0.0
---- VERSION: 0.3.4
+--- VERSION: 0.3.4a
 --- BADGE_COLOR: 32751a
 
 local dndj_mod = SMODS.current_mod
@@ -22,7 +22,6 @@ G.ARGS.LOC_COLOURS.explosive = HEX'e07c2f'
 dndj_mod.description_loc_vars = function()
     return { background_colour = G.C.CLEAR, text_colour = G.C.WHITE, scale = 1 }
 end
-
 
 -- A T L A S E S --
 dndj = {}
@@ -310,7 +309,7 @@ SMODS.Rank {
     key = 'Pi',
     card_key = 'Pi',
     pos = {x = 19},
-    nominal = 3.14,
+    nominal = 3.141592653,
     next = { '4', '5' },
     prev = {'3'},
     shorthand = 'Pi',
@@ -516,10 +515,11 @@ SMODS.Rarity{
 local contraband_booster_rate = {.5, .5, .25, .1}
 local contraband_booster_cost = {4, 4, 6, 8}
 local contraband_booster_name = {"Contraband Pack", "Contraband Pack", "Jumbo Contraband Pack", "Mega Contraband Pack"}
+local contraband_booster_key = {"contraband_1", "contraband_2", "contraband_3", "contraband_4"}
 
 for i = 1, 4 do
     SMODS.Booster{
-        key = 'contraband_'..(i <= 2 and i or i == 3 and 'jumbo' or 'mega'),
+        key = contraband_booster_key[i],
         loc_txt = {
             group_name = "Contraband Pack",
             name = contraband_booster_name[i],
@@ -529,7 +529,8 @@ for i = 1, 4 do
                 "{C:attention}an illegal rank{} to add to your deck"
             },
           },
-		cost = contraband_booster_cost[i],
+		--no_pool_flag = 'full_deck_exception',
+        cost = contraband_booster_cost[i],
         atlas = 'booster', pos = { x = i-1, y = 0 },
         config = {extra = i <= 2 and 3 or 5, choose =  i <= 3 and 1 or 2},
         draw_hand = false,
@@ -2469,7 +2470,7 @@ SMODS.Back{
         --G.GAME.HUD:recalculate()
         G.GAME.round_resets.ante = 0
         G.GAME.round_resets.blind_ante = 0
-        G.GAME.banned_keys = {'bl_pillar'}
+        G.GAME.banned_keys['bl_pillar'] = true
         ease_ante(0)
         --SMODS.Blind:take_ownership('bl_pillar', {boss = {min = 9e999, max = 9e999}})
         G.E_MANAGER:add_event(Event({
@@ -2690,7 +2691,11 @@ SMODS.Back{
       },
     apply = function(self)
         --contraband_booster_rate = {0, 0, 0, 0}
-        G.GAME.banned_keys = {'dndj_contraband', 'dndj_contraband_','dndj_contraband_jumbo','dndj_contraband_mega'}
+        G.GAME.banned_keys['p_dndj_contraband_1'] = true
+        G.GAME.banned_keys['p_dndj_contraband_2'] = true
+        G.GAME.banned_keys['p_dndj_contraband_3'] = true
+        G.GAME.banned_keys['p_dndj_contraband_4'] = true
+        --G.GAME.pool_flags.full_deck_exception = true
         setPoolRankFlagEnable('dndj_0', true)
         setPoolRankFlagEnable('dndj_0.5', true)
         setPoolRankFlagEnable('dndj_1', true)
